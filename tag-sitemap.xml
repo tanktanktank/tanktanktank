@@ -2,29 +2,29 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
-        <loc>http://yoursite-url/tags/Hexo/</loc>
+        <loc>tanktanktank.github.io/tags/Hexo/</loc>
         <lastmod>2019-08-01T11:47:48.898Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/Blog/</loc>
-        <lastmod>2019-08-01T11:56:58.641Z</lastmod>
+        <loc>tanktanktank.github.io/tags/iOS/</loc>
+        <lastmod>2019-08-01T12:41:29.437Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/%E7%BB%8F%E5%8E%86/</loc>
-        <lastmod>2019-08-01T11:56:58.641Z</lastmod>
+        <loc>tanktanktank.github.io/tags/%E7%BB%8F%E5%8E%86/</loc>
+        <lastmod>2019-08-01T12:42:24.648Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/iOS/</loc>
-        <lastmod>2019-08-01T11:58:48.225Z</lastmod>
+        <loc>tanktanktank.github.io/tags/Blog/</loc>
+        <lastmod>2019-08-01T12:42:24.648Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
