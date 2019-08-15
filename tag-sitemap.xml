@@ -9,13 +9,6 @@
     </url>
 
     <url>
-        <loc>tanktanktank.github.io/tags/iOS/</loc>
-        <lastmod>2019-08-01T12:41:29.437Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>tanktanktank.github.io/tags/Blog/</loc>
         <lastmod>2019-08-01T14:39:42.197Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -39,6 +32,13 @@
     <url>
         <loc>tanktanktank.github.io/tags/%E5%B9%B3%E5%81%87%E5%90%8D/</loc>
         <lastmod>2019-08-01T15:56:27.134Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>tanktanktank.github.io/tags/iOS/</loc>
+        <lastmod>2019-08-15T14:23:46.303Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          About - co3co | tanktanktank
+          要实现先pop 然后 push 不想有动画 可以用这个实现 - co3co | tanktanktank
         
     </title>
 
-    <link rel="canonical" href="tanktanktank.github.io/about/">
+    <link rel="canonical" href="tanktanktank.github.io/2019/08/15/pop-and-push-without-animation/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/header_img/Iron-Man-3.jpg')
-            /*page*/
+            background-image: url('header.jpg')
+            /*post*/
         
     }
     
@@ -83,10 +83,18 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="site-heading">
-                        <h1>About</h1>
-                        <!--<hr class="small">-->
-                        <span class="subheading">Wish for the Best, Prepare for the Worst</span>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                            
+                        </div>
+                        <h1>要实现先pop 然后 push 不想有动画 可以用这个实现</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by tanktanktank on
+                            2019-08-15
+                        </span>
                     </div>
                 
 
@@ -189,159 +197,133 @@
 
 
     <!-- Main Content -->
-    <!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
+    <!-- Modify by Yu-Hsuan Yen -->
 
-<!-- USE SIDEBAR -->
-    <!-- Post Container -->
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <blockquote>
-<p>光有好奇心而不去實踐，等於自願放棄成功機會<br>
-別為自己畫地自限，Just Do It！！</p>
-</blockquote>
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
+                <h4><span id="要实现先pop-然后-push-不想有动画-可以用这个实现">要实现先pop 然后 push 不想有动画 可以用这个实现</span></h4>
+<h6><span id="1先pop-发送通知或代理在前一个页面执行push操作">1.先pop 发送通知或代理在前一个页面执行push操作</span></h6>
+<p>最近遇到有一个认证的流程 有很多个认证步骤 push 了几个页面 然后到最后的认证失败页面 要实现重新验证，这时候就需要用到push 然后再pop的情况。如果直接调用pop，立刻去push。如果这两个命令写在同一个控制器中，则会发现push根本没有被执行……因为pop已经将该控制器移除，push根本没有机会执行。我先是发一个通知，然后rootVC监控通知，延时执行push动作（当然block或者代理也能实现，我是为了简单方便），然后pop到rootVC ，此时执行延时的push操作。能实现需求 ，发现微信群里面点击群员，然后再点击跟群员私聊也是这么实现的，但是有一点不友好的感觉，因为有pop弹出动画，然后再跳转push 动画，不是很自然，交互非常不好。</p>
+<h6><span id="2获取控制器栈删除要push的vc之前的到执行push的vc之间的vcs">2.获取控制器栈，删除要push的VC之前的到执行push的VC之间的vcs</span></h6>
+<p>所以就选择了下面的方法，先移除路由栈中当前控制器，再新增新的控制器，最后赋值。下面是显示代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/*1.如果只是要实现pop到上一层 然后直接push 可以用以下代码*/</span><br><span class="line">// 获取当前路由的控制器数组</span><br><span class="line">NSMutableArray *vcArray = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];</span><br><span class="line">// 打印当前路由的控制器数组</span><br><span class="line">NSLog(@&quot;1==the vcArray is %@&quot;, vcArray);</span><br><span class="line">// 获取档期控制器在路由的位置</span><br><span class="line">int index = (int)[vcArray indexOfObject:self];</span><br><span class="line">// 移除当前路由器</span><br><span class="line">[vcArray removeObjectAtIndex:index];</span><br><span class="line">NSLog(@&quot;2==the vcArray is %@&quot;, vcArray);</span><br><span class="line">// 添加新控制器</span><br><span class="line">// 新建将要push的控制器</span><br><span class="line">OTCKYCPersonInfoController *vc = [[OTCKYCPersonInfoController alloc]init];</span><br><span class="line">[vcArray addObject: vc];</span><br><span class="line">// 打印新增后的控制器数组</span><br><span class="line">NSLog(@&quot;3==the vcArray is %@&quot;, vcArray);</span><br><span class="line">// 重新设置当前导航控制器的路由数组</span><br><span class="line">[self.navigationController setViewControllers:vcArray animated:YES];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> /*2.如果只是要实现pop到多层之前, 然后直接push 可以用以下代码*/</span><br><span class="line">NSMutableArray *vcArray = [NSMutableArray    arrayWithArray:self.navigationController.viewControllers];</span><br><span class="line"></span><br><span class="line">for (UIViewController *controller in self.navigationController.viewControllers) &#123;</span><br><span class="line">    if ([controller isKindOfClass:[OTCMyController class]]) &#123;</span><br><span class="line">        int rootIndex = (int)[vcArray indexOfObject:controller];</span><br><span class="line">        int index = (int)[vcArray indexOfObject:self];</span><br><span class="line">        // 删除执行push的vc之后的vc</span><br><span class="line">        while (index &gt;rootIndex) &#123;</span><br><span class="line">            [vcArray removeObjectAtIndex:index];</span><br><span class="line">            index --;</span><br><span class="line">        &#125;</span><br><span class="line">        // 新建将要push的控制器</span><br><span class="line">        OTCKYCPersonInfoController *vc = [[OTCKYCPersonInfoController alloc]init];</span><br><span class="line">        [vcArray addObject: vc];</span><br><span class="line">          // 重新设置一下当前导航控制器的路由数组 done</span><br><span class="line">        [self.navigationController setViewControllers:vcArray animated:YES];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-                <!-- 如果开启评论功能 -->
                 
-                    <hr>
 
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
                     
-
                     
-
-
+                        <li class="next">
+                            <a href="/2019/08/01/japanese-fifty-tones/" data-toggle="tooltip" data-placement="top" title="日本语五十音图记忆">Next Post &rarr;</a>
+                        </li>
                     
+                </ul>
 
-                    
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">要实现先pop 然后 push 不想有动画 可以用这个实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.0.1.</span> <span class="toc-nav-text">1.先pop 发送通知或代理在前一个页面执行push操作</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.0.2.</span> <span class="toc-nav-text">2.获取控制器栈，删除要push的VC之前的到执行push的VC之间的vcs</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
                 
             </div>
-
-          <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-        <!-- Featured Tags -->
-
-<section>
-    <!-- no hr -->
-    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-    <div class="tags">
-        
-            
-        
-            
-            <a href="/tags/#Blog" title="Blog" rel="2">Blog</a>
-            
-        
-            
-        
-            
-        
-            
-        
-            
-            <a href="/tags/#iOS" title="iOS" rel="2">iOS</a>
-            
-        
+        </div>
     </div>
-</section>
+</article>
 
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-    <h5><a href="/about/">ABOUT ME</a></h5>
-    <div class="short-about">
 
-        
-            <img id = "avatar_pic" src="/img/icon.png" />
-        
 
-        
-            <p>Hi, TANK here</p>
-        
 
-        <!-- SNS Link -->
-        <ul class="list-inline">
-            
-            
-            
 
-            
 
-            
 
-            
-                <li>
-                    <a target="_blank"  href="https://github.com/tanktanktank">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                        </span>
-                    </a>
-                </li>
-            
-            
-            
-            
-        </ul>
-    </div>
-</section>
-        <hr>
-    
-        
-  <h5>RECENT POSTS</h3>
-  <div class="widget">
-    <ul>
-      
-        <li>
-          <a href="/2019/08/15/pop-and-push-without-animation/">要实现先pop 然后 push 不想有动画 可以用这个实现</a>
-        </li>
-      
-        <li>
-          <a href="/2019/08/01/japanese-fifty-tones/">日本语五十音图记忆</a>
-        </li>
-      
-        <li>
-          <a href="/2019/08/01/记录一下第一次遇到拖欠工资经历/">记录一下第一次遇到拖欠工资经历</a>
-        </li>
-      
-        <li>
-          <a href="/2019/06/01/重用cell的两种方法/">重用cell的两种方法</a>
-        </li>
-      
-        <li>
-          <a href="/2017/03/18/hexo-theme-beantech/">[Hexo] Theme BeanTech</a>
-        </li>
-      
-    </ul>
-  </div>
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
-        <hr>
-    
-        <!-- Friends Blog -->
-
-        <hr>
-    
-</div>
-
-        
-    </div>
-</div>
 
 
     <!-- Footer -->
