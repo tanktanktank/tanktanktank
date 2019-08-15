@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          记录一下第一次遇到拖欠工资经历 - co3co | tanktanktank
+          iOS设置富文本行间距、字间距 - co3co | tanktanktank
         
     </title>
 
-    <link rel="canonical" href="tanktanktank.github.io/2019/08/01/记录一下第一次遇到拖欠工资经历/">
+    <link rel="canonical" href="tanktanktank.github.io/2019/03/12/iOS富文本行间距/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -86,16 +86,16 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                              <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                             
-                              <a class="tag" href="/tags/#经历" title="经历">经历</a>
+                              <a class="tag" href="/tags/#技术" title="技术">技术</a>
                             
                         </div>
-                        <h1>记录一下第一次遇到拖欠工资经历</h1>
+                        <h1>iOS设置富文本行间距、字间距</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by tanktanktank on
-                            2019-08-01
+                            2019-03-12
                         </span>
                     </div>
                 
@@ -212,11 +212,128 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>最近什么糟心事都遇上了</p>
-<p>事情开始于7月中旬一个星期五， 当时都好好的在上班，突然劳动局的人来了，说是来查询一下公司员工的薪资情况。当时很是诧异，第一次遇到这种场面，之后在别的同事口中才得知，公司已经拖欠两三个月工资了！！！才入职一个月多一点，就踩雷了。之后大家应该都没什么心情上班了。</p>
-<p>第二周周一上班，公司就剩几个人在IT部门，技术负责人陈某笑吟吟进来说，不好意思，公司项目可能不做了，做不下去了。行吧，大家都知道了，想要求我们自己提出离职，先是找老员工谈心，在找每一个人说明情况。之后大家都相继离职找工作，22号当天要求我来办离职，我去了说明情况，我想是等到25号工资日拿不到工资，所以没有办理。之后就每天都请假，一开始每天都批，25号果真没发工资。好戏在26号开始请假都不批，大概明白什么回事了，等到30号私我说我已经旷工了，陈某的嘴脸！！</p>
-<p>今天去办理离职，竟然大言不惭说我旷工4天，旷工一天可能扣3天工资？？？！！！甚至说如果我不服，7月份不够扣还会，这都行？？？已经严重违法了好吗，按照劳动法规定，如果我请假不批，你要通过各种途径来通知我去上班，然而没有任何形式通知，说明我工作根本对公司没有影响了（事实上现在项目也已经没办法继续了），现在就等这几天他给我7月的薪资详情，我再连6月拖欠工资的一并去劳动仲裁！！这个真的气不过。</p>
-<p>及时止损，我这次肯定不会善罢甘休，合法权益一定要维护到底！！气不过！！</p>
+                <h3><span id="ios设置富文本行间距-字间距">iOS设置富文本行间距、字间距</span></h3>
+<p>在展示文字信息时，经常会碰到换行自适应高度的文本，这时我们会发现换行之后，文本之间的行间距依然很小，导致看起来很拥挤，影响美观。因此以下代码就是来解决这些问题，新建一个NSString的类别，贴出如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/* 获取富文本的高度</span><br><span class="line"> *</span><br><span class="line"> * @param string    文字</span><br><span class="line"> * @param lineSpace 行间距</span><br><span class="line"> * @param kern      字间距</span><br><span class="line"> * @param font      字体大小</span><br><span class="line"> * @param width     文本宽度</span><br><span class="line"> *</span><br><span class="line"> * @return size</span><br><span class="line"> */</span><br><span class="line">- (CGSize)getAttributionHeightWithString:(NSString *)string lineSpace:(CGFloat)lineSpace kern:(CGFloat)kern font:(UIFont *)font width:(CGFloat)width &#123;</span><br><span class="line">    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];</span><br><span class="line">    paragraphStyle.lineSpacing = lineSpace;</span><br><span class="line">    NSDictionary *attriDict = @&#123;</span><br><span class="line">                            NSParagraphStyleAttributeName:paragraphStyle,</span><br><span class="line">                                NSKernAttributeName:@(kern),</span><br><span class="line">                                NSFontAttributeName:font&#125;;</span><br><span class="line">    CGSize size = [string boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attriDict context:nil].size;</span><br><span class="line">    return size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> *  设置行间距和字间距</span><br><span class="line"> *</span><br><span class="line"> *  @param string    字符串</span><br><span class="line"> *  @param lineSpace 行间距</span><br><span class="line"> *  @param kern      字间距</span><br><span class="line"> *  @param font      字体大小</span><br><span class="line"> *</span><br><span class="line"> *  @return 富文本</span><br><span class="line"> */</span><br><span class="line">- (NSAttributedString *)getAttributedWithString:(NSString *)string WithLineSpace:(CGFloat)lineSpace kern:(CGFloat)kern font:(UIFont *)font&#123;</span><br><span class="line">    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];</span><br><span class="line">    //调整行间距</span><br><span class="line">    paragraphStyle.lineSpacing = lineSpace;</span><br><span class="line">    NSDictionary *attriDict = @&#123;NSParagraphStyleAttributeName:paragraphStyle,NSKernAttributeName:@(kern),</span><br><span class="line">        NSFontAttributeName:font&#125;;</span><br><span class="line">    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:string attributes:attriDict];</span><br><span class="line">    return attributedString;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="常用的属性">常用的属性</span></h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">属性Name</th>
+<th style="text-align:center">干啥的</th>
+<th style="text-align:right">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">NSFontAttributeName</td>
+<td style="text-align:center">字号</td>
+<td style="text-align:right">UIFont 默认12</td>
+</tr>
+<tr>
+<td style="text-align:left">NSParagraphStyleAttributeName</td>
+<td style="text-align:center">段落样式</td>
+<td style="text-align:right">NSParagraphStyle</td>
+</tr>
+<tr>
+<td style="text-align:left">NSForegroundColorAttributeName</td>
+<td style="text-align:center">前景色</td>
+<td style="text-align:right">UIColor</td>
+</tr>
+<tr>
+<td style="text-align:left">NSBackgroundColorAttributeName</td>
+<td style="text-align:center">背景色</td>
+<td style="text-align:right">UIColor</td>
+</tr>
+<tr>
+<td style="text-align:left">NSObliquenessAttributeName</td>
+<td style="text-align:center">字体倾斜</td>
+<td style="text-align:right">NSNumber</td>
+</tr>
+<tr>
+<td style="text-align:left">NSExpansionAttributeName</td>
+<td style="text-align:center">字体加粗</td>
+<td style="text-align:right">NSNumber 比例 0就是不变 1增加一倍</td>
+</tr>
+<tr>
+<td style="text-align:left">NSKernAttributeName</td>
+<td style="text-align:center">字间距</td>
+<td style="text-align:right">CGFloat</td>
+</tr>
+<tr>
+<td style="text-align:left">NSUnderlineStyleAttributeName</td>
+<td style="text-align:center">下划线</td>
+<td style="text-align:right">1或0</td>
+</tr>
+<tr>
+<td style="text-align:left">NSUnderlineColorAttributeName</td>
+<td style="text-align:center">下划线颜色</td>
+<td style="text-align:right">UIColor</td>
+</tr>
+<tr>
+<td style="text-align:left">NSStrikethroughStyleAttributeName</td>
+<td style="text-align:center">删除线</td>
+<td style="text-align:right">1或0</td>
+</tr>
+<tr>
+<td style="text-align:left">NSStrikethroughColorAttributeName</td>
+<td style="text-align:center">删除线颜色</td>
+<td style="text-align:right">UIColor</td>
+</tr>
+<tr>
+<td style="text-align:left">NSStrokeColorAttributeName</td>
+<td style="text-align:center">same as ForegroundColor</td>
+<td style="text-align:right">UIColor</td>
+</tr>
+<tr>
+<td style="text-align:left">NSStrokeWidthAttributeName</td>
+<td style="text-align:center">字体描边</td>
+<td style="text-align:right">CGFloat</td>
+</tr>
+<tr>
+<td style="text-align:left">NSLigatureAttributeName</td>
+<td style="text-align:center">连笔字 没看出效果</td>
+<td style="text-align:right">1或0</td>
+</tr>
+<tr>
+<td style="text-align:left">NSShadowAttributeName</td>
+<td style="text-align:center">阴影</td>
+<td style="text-align:right">NSShawdow</td>
+</tr>
+<tr>
+<td style="text-align:left">NSTextEffectAttributeName</td>
+<td style="text-align:center">设置文本特殊效果,目前只有图版印刷效果可用</td>
+<td style="text-align:right">NSString</td>
+</tr>
+<tr>
+<td style="text-align:left">NSAttachmentAttributeName</td>
+<td style="text-align:center">设置文本附件,常用插入图片</td>
+<td style="text-align:right">NSTextAttachment</td>
+</tr>
+<tr>
+<td style="text-align:left">NSLinkAttributeName</td>
+<td style="text-align:center">链接</td>
+<td style="text-align:right">NSURL (preferred) or NSString</td>
+</tr>
+<tr>
+<td style="text-align:left">NSBaselineOffsetAttributeName</td>
+<td style="text-align:center">基准线偏移</td>
+<td style="text-align:right">NSNumber</td>
+</tr>
+<tr>
+<td style="text-align:left">NSWritingDirectionAttributeName</td>
+<td style="text-align:center">文字方向 分别代表不同的文字出现方向等等，我想你一定用不到它 - -</td>
+<td style="text-align:right">@[@(1),@(2)]</td>
+</tr>
+<tr>
+<td style="text-align:left">NSVerticalGlyphFormAttributeName</td>
+<td style="text-align:center">水平或者竖直文本 在iOS没卵用，不支持竖版</td>
+<td style="text-align:right">1竖直 0水平</td>
+</tr>
+</tbody>
+</table>
+<p>更多用法看 <a href="https://www.jianshu.com/p/9ee12b7e2709" target="_blank" rel="noopener">简书博文-iOS富文本(NSAttributedString)—尽力弄全了</a></p>
 
                 
 
@@ -225,12 +342,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2019/08/01/japanese-fifty-tones/" data-toggle="tooltip" data-placement="top" title="日本语五十音图记忆">&larr; Previous Post</a>
+                            <a href="/2019/06/01/重用cell的两种方法/" data-toggle="tooltip" data-placement="top" title="重用cell的两种方法">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2019/06/01/重用cell的两种方法/" data-toggle="tooltip" data-placement="top" title="重用cell的两种方法">Next Post &rarr;</a>
+                            <a href="/2017/03/18/hexo-theme-beantech/" data-toggle="tooltip" data-placement="top" title="[Hexo] Theme BeanTech">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -256,7 +373,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="nav">none</ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">iOS设置富文本行间距、字间距</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#null"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">常用的属性</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -276,9 +393,9 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                          <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                         
-                          <a class="tag" href="/tags/#经历" title="经历">经历</a>
+                          <a class="tag" href="/tags/#技术" title="技术">技术</a>
                         
                     </div>
                 </section>
