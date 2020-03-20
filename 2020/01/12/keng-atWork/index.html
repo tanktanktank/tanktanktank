@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -237,6 +237,10 @@ app 审核打回 这个遇到过一次了 做成了微信登录 没有隐藏 被
 <li>
 <p>在info.plits文件中添加key Status bar is initially hidden = YES 就可以啦</p>
 </li>
+</ul>
+<ul>
+<li>有些时候用 reloadRows 刷新指定 cell 或者 reloadData 刷新整张表格时，会发生表格闪烁跳动的现象，即使你指定了 UITableViewRowAnimation = .none 也无济于事，这时可以试试下面这种方法：+ (void)performWithoutAnimation:(void (^)(void))actionsWithoutAnimation<br>
+在里面调用刷新cell 方法</li>
 </ul>
 
                 
